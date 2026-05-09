@@ -53,7 +53,21 @@ cloudflared tunnel create mcp-server
 
 Note the tunnel ID printed after creation.
 
-### 3. Create the config file
+### 3. Find your credentials file path
+
+The credentials file location depends on which user ran `tunnel login`:
+
+```bash
+# if you ran as root
+ls /root/.cloudflared/
+
+# if you ran as your normal user
+ls ~/.cloudflared/
+```
+
+You're looking for a file named `<YOUR_TUNNEL_ID>.json`. Use whichever path exists — you'll need it in the next step.
+
+### 4. Create the config file
 
 ```bash
 sudo mkdir -p /etc/cloudflared
@@ -70,7 +84,7 @@ EOF
 
 Replace `<YOUR_TUNNEL_ID>` and `mcp.yourdomain.com` with your values.
 
-### 4. Route DNS
+### 5. Route DNS
 
 ```bash
 cloudflared tunnel route dns mcp-server mcp.yourdomain.com
@@ -78,7 +92,7 @@ cloudflared tunnel route dns mcp-server mcp.yourdomain.com
 
 This creates a `CNAME` record in your Cloudflare dashboard pointing to the tunnel.
 
-### 5. Run as a service
+### 6. Run as a service
 
 ```bash
 sudo cloudflared service install
